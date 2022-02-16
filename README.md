@@ -1,64 +1,56 @@
-## intersystems-objectscript-template
-This is a template for InterSystems ObjectScript Github repository.
-The template goes also with a few files which let you immedietly compile your ObjecScript files in InterSystems IRIS Community Edition in a docker container
+# code-with-quarkus Project
 
-## Prerequisites
-Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-## Installation 
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-Clone/git pull the repo into any local directory
+## Running the application in dev mode
 
-```
-$ git clone https://github.com/intersystems-community/objectscript-docker-template.git
+You can run your application in dev mode that enables live coding using:
+```shell script
+./mvnw compile quarkus:dev
 ```
 
-Open the terminal in this directory and run:
+> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
+## Packaging and running the application
+
+The application can be packaged using:
+```shell script
+./mvnw package
 ```
-$ docker-compose build
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+
+If you want to build an _über-jar_, execute the following command:
+```shell script
+./mvnw package -Dquarkus.package.type=uber-jar
 ```
 
-3. Run the IRIS container with your project:
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
+## Creating a native executable
+
+You can create a native executable using: 
+```shell script
+./mvnw package -Pnative
 ```
-$ docker-compose up -d
+
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+```shell script
+./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-## How to Test it
+You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
 
-Open IRIS terminal:
+If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
-```
-$ docker-compose exec iris iris session iris
-USER>write ##class(dc.PackageSample.ObjectScript).Test()
-```
-## How to start coding
-This repository is ready to code in VSCode with ObjectScript plugin.
-Install [VSCode](https://code.visualstudio.com/), [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and [ObjectScript](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript) plugin and open the folder in VSCode.
-Open /src/cls/PackageSample/ObjectScript.cls class and try to make changes - it will be compiled in running IRIS docker container.
-![docker_compose](https://user-images.githubusercontent.com/2781759/76656929-0f2e5700-6547-11ea-9cc9-486a5641c51d.gif)
+## Provided Code
 
-Feel free to delete PackageSample folder and place your ObjectScript classes in a form
-/src/Package/Classname.cls
-[Read more about folder setup for InterSystems ObjectScript](https://community.intersystems.com/post/simplified-objectscript-source-folder-structure-package-manager)
+### RESTEasy JAX-RS
 
-The script in Installer.cls will import everything you place under /src into IRIS.
+Easily start your RESTful Web Services
 
-
-## What's inside the repository
-
-### Dockerfile
-
-The simplest dockerfile which starts IRIS and imports code from /src folder into it.
-Use the related docker-compose.yml to easily setup additional parametes like port number and where you map keys and host folders.
-
-
-### .vscode/settings.json
-
-Settings file to let you immedietly code in VSCode with [VSCode ObjectScript plugin](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript))
-
-### .vscode/launch.json
-Config file if you want to debug with VSCode ObjectScript
-
-[Read about all the files in this artilce](https://community.intersystems.com/post/dockerfile-and-friends-or-how-run-and-collaborate-objectscript-projects-intersystems-iris)
+[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
