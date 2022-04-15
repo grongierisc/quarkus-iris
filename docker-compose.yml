@@ -19,6 +19,7 @@ services:
     image: iris-db
     build: 
       context: iris
+    command: --check-caps false
     volumes:
       - ./:/irisrun/repo
     ports:
